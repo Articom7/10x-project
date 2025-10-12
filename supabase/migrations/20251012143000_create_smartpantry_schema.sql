@@ -433,3 +433,16 @@ create policy "authenticated users can select onboarding products"
   to authenticated
   using (true);
 
+-- ============================================================================
+-- disable row level security on all tables
+-- ============================================================================
+-- warning: disabling rls removes all access control
+-- this should only be used in development environments
+
+alter table public.profiles disable row level security;
+alter table public.categories disable row level security;
+alter table public.products disable row level security;
+alter table public.pantry_items disable row level security;
+alter table public.shopping_lists disable row level security;
+alter table public.shopping_list_items disable row level security;
+alter table public.onboarding_products disable row level security;
