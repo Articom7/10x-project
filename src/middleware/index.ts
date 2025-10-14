@@ -9,10 +9,10 @@ const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
 export const onRequest = defineMiddleware(async (context, next) => {
   // Extract JWT token from Authorization header
   const authHeader = context.request.headers.get("Authorization");
-  
+
   if (authHeader?.startsWith("Bearer ")) {
     const token = authHeader.substring(7);
-    
+
     // Create Supabase client with user's auth token
     const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
       global: {
@@ -21,10 +21,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
         },
       },
     });
-    
+
     // Verify token and get user
-    const { data: { user }, error } = await supabase.auth.getUser(token);
-    
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser(token);
+
     if (!error && user) {
       context.locals.supabase = supabase;
       context.locals.user = user;
@@ -38,6 +41,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     context.locals.supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
     context.locals.user = null;
   }
-  
+
   return next();
 });
