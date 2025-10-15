@@ -1,0 +1,51 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import ShoppingListsContent from '@/components/ShoppingListsContent';
+import type { ShoppingListSummaryDTO, PantryCategoryGroupDTO, PantryItemDTO } from '@/types';
+
+// Auth check
+const { supabase, user } = Astro.locals;
+if (!user) {
+  return Astro.redirect('/login');
+}
+
+// Default values in case of API errors
+let lists: ShoppingListSummaryDTO[] = [];
+let emptyItemsCount = 0;
+
+try {
+  // TODO: Replace with actual API calls when endpoints are implemented
+  // For now, using empty data as placeholders
+  
+  // Fetch shopping lists - will be implemented later
+  // const listsResponse = await fetch(`${Astro.url.origin}/api/shopping-lists`);
+  // if (listsResponse.ok) {
+  //   const listsData = await listsResponse.json();
+  //   lists = listsData.data || [];
+  // }
+
+  // Fetch pantry data to calculate empty items count - will be implemented later
+  // const pantryResponse = await fetch(`${Astro.url.origin}/api/pantry?show_empty=true`);
+  // if (pantryResponse.ok) {
+  //   const pantryData = await pantryResponse.json();
+  //   emptyItemsCount = (pantryData.data || [])
+  //     .flatMap((category: PantryCategoryGroupDTO) => category.items)
+  //     .filter((item: PantryItemDTO) => item.quantity === 0).length;
+  // }
+
+  lists = [];
+  emptyItemsCount = 0;
+} catch (error) {
+  console.error('Error fetching data for shopping lists page:', error);
+  // Continue with default values
+}
+---
+
+<Layout title="Listy zakupów">
+  <ShoppingListsContent 
+    client:load
+    initialLists={lists}
+    emptyItemsCount={emptyItemsCount}
+  />
+</Layout>
+

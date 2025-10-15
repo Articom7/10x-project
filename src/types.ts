@@ -1,4 +1,6 @@
-import type { Tables, TablesInsert, TablesUpdate } from "./db/database.types";
+import type { Tables } from "./db/database.types";
+// Note: TablesInsert and TablesUpdate will be used for future features
+// import type { TablesInsert, TablesUpdate } from "./db/database.types";
 
 // ============================================================================
 // Base Entity Types (Direct mappings from database)
@@ -321,3 +323,92 @@ export interface PantryQueryParams {
  * Shopping List Query Params - Query parameters for GET /api/shopping-lists
  */
 export type ShoppingListQueryParams = PaginationParams;
+
+// ============================================================================
+// Shopping Lists View Types
+// ============================================================================
+
+/**
+ * Props for the main shopping lists view component
+ */
+export interface ShoppingListsContentProps {
+  initialLists: ShoppingListSummaryDTO[];
+  emptyItemsCount: number;
+}
+
+/**
+ * Props for the generate list button component
+ */
+export interface GenerateListButtonProps {
+  emptyItemsCount: number;
+  onClick: () => void;
+  disabled: boolean;
+}
+
+/**
+ * Props for the active shopping list card component
+ */
+export interface ActiveShoppingListCardProps {
+  list: ShoppingListSummaryDTO;
+}
+
+/**
+ * Props for the archived lists section component
+ */
+export interface ArchivedListsSectionProps {
+  lists: ShoppingListSummaryDTO[];
+}
+
+/**
+ * Props for the archived list card component
+ */
+export interface ArchivedListCardProps {
+  list: ShoppingListSummaryDTO;
+}
+
+/**
+ * Props for the generate list modal component
+ */
+export interface GenerateListModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onGenerate: (name?: string) => Promise<void>;
+  emptyItemsCount: number;
+}
+
+/**
+ * Props for the empty state component
+ */
+export interface EmptyStateProps {
+  onGenerateClick: () => void;
+  emptyItemsCount: number;
+}
+
+/**
+ * Props for the shopping list item preview component
+ */
+export interface ShoppingListItemPreviewProps {
+  item: ShoppingListItemDTO;
+}
+
+/**
+ * Props for the toast component
+ */
+export interface ToastProps {
+  message: string;
+  type: "success" | "error" | "warning" | "info";
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+/**
+ * State managed by useShoppingLists hook
+ */
+export interface ShoppingListsState {
+  lists: ShoppingListSummaryDTO[];
+  activeList: ShoppingListSummaryDTO | null;
+  archivedLists: ShoppingListSummaryDTO[];
+  isModalOpen: boolean;
+  isGenerating: boolean;
+  toastProps: ToastProps;
+}
